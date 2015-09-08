@@ -3,7 +3,7 @@ mkdir editing
 rm -rf editing/*
 files=(./*)
 seconds=2
-for ((I=0;I<125;I++))
+for ((I=0;I<200;I++))
 do
 	video=${files[RANDOM % ${#files[@]}]}
 	if [[ $video == *GOPR* ]]
@@ -23,4 +23,4 @@ rm output.MP4
 mencoder -ovc copy -oac pcm editing/*.MP4 -o output.MP4
 
 rm output_final.MP4
-ffmpeg -i output.MP4 -i music.mp3 -map 0:0 -map 1:0 output_final.MP4
+ffmpeg -i output.MP4 -i music.mp3 -map 0:0 -map 1:0 -shortest output_final.MP4
