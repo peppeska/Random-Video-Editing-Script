@@ -3,7 +3,7 @@ mkdir editing
 rm -rf editing/*
 files=(./*)
 seconds=2
-for ((I=0;I<350;I++))
+for ((I=0;I<150;I++))
 do
 	video=${files[RANDOM % ${#files[@]}]}
 	if [[ $video == *GOPR* ]]
@@ -12,7 +12,8 @@ do
 		echo "File: " $video
 		durata=`ffmpeg -i $video 2>&1 | grep "Duration"| cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g' | awk '{ split($1, A, ":"); split(A[3], B, "."); print 3600*A[1] + 60*A[2] + B[1] }' `
 		echo "duration: "$durata
-		if [[$durata -ge $seconds ]]
+		if [[ $durata -ge $seconds ]]
+		then
 			end=`shuf -i $seconds-$durata -n 1`
 			start=$((end-$seconds))
 			echo start: $start , end: $end
