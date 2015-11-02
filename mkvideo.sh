@@ -3,7 +3,8 @@ mkdir editing
 rm -rf editing/*
 files=(./*)
 seconds=2
-for ((I=0;I<150;I++))
+I=0
+while [[ $I -le 140 ]]
 do
 	video=${files[RANDOM % ${#files[@]}]}
 	if [[ $video == *GOPR* ]]
@@ -14,10 +15,12 @@ do
 		echo "duration: "$durata
 		if [[ $durata -ge $seconds ]]
 		then
+			echo $I
 			end=`shuf -i $seconds-$durata -n 1`
 			start=$((end-$seconds))
 			echo start: $start , end: $end
 			command=`ffmpeg -loglevel panic -i $video -ss $start -t $seconds -strict -2 editing/$I.MP4`
+			I=$(( $I + 1 ))
 		fi
 	fi
 done
