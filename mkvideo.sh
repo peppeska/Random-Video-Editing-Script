@@ -115,7 +115,7 @@ do
 					#VIDEOS+=($video)
 					pass=$(( ${VIDEOARR[$video]} + 1 ))
 					echo "passed here $pass time"	
-					VIDEOARR[$video]=$(( ${VIDEOARR[$video]} + $pass ))
+					VIDEOARR[$video]=$pass
 				fi
 		fi
 	fi
