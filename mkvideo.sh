@@ -8,7 +8,7 @@ echo "###########################################################"
 echo "# https://github.com/peppeska/Random-Video-Editing-Script #"
 echo "###########################################################"
 
-options=("-u" "-m" "-h" "-s" "-n")
+options=("-u" "-m" "-h" "-s" "-n" "-o")
 
 helpmenu () {
 	echo "##############################"
@@ -19,6 +19,7 @@ helpmenu () {
 	echo "# -m music file (default: music.mp3)"
 	echo "# -s seconds cut fro video (default: 2)"
 	echo "# -n numer of selection (default: 140)"
+	echo "# -o output file (default: output_final.MP4)"
 	echo "# -h show this help menu"
 	echo "##############################"
 }
@@ -27,8 +28,9 @@ unique=false
 music="music.mp3"
 seconds=2
 selectionNumber=140
+outputFile="output_final.MP4"
 
-while getopts ":uhm:s:n:" optname
+while getopts ":uhm:s:n:o:" optname
   do
     case "$optname" in
       "u")
@@ -46,6 +48,10 @@ while getopts ":uhm:s:n:" optname
       "n")
         echo "Option $optname has value $OPTARG"
 	selectionNumber=$OPTARG
+        ;;
+      "o")
+        echo "Option $optname has value $OPTARG"
+	outputFile=$OPTARG
         ;;
       "h")
         helpmenu
@@ -101,5 +107,5 @@ done
 rm output.MP4
 mencoder -ovc copy -oac pcm $editdir/*.MP4 -o output.MP4
 
-rm output_final.MP4
-ffmpeg -i output.MP4 -i $music -map 0:0 -map 1:0 -shortest output_final.MP4
+rm $outputFile
+ffmpeg -i output.MP4 -i $music -map 0:0 -map 1:0 -shortest $outputFile
