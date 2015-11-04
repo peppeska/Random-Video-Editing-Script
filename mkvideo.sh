@@ -94,7 +94,7 @@ do
 	then
 		if [[ ( ! ${VIDEOARR[$video]+_}) ]]
 		then
-			VIDEOARR[$video]=1
+			VIDEOARR[$video]=0
 		fi
    
 		if [[ ${VIDEOARR[$video]}<$passonvideo ]]
@@ -106,14 +106,16 @@ do
 				echo "duration: "$durata
 				if [[ $durata -ge $seconds ]]
 				then
-					echo $I
+					echo "Selection Number now: $I"
 					end=`shuf -i $seconds-$durata -n 1`
 					start=$((end-$seconds))
 					echo start: $start , end: $end
 					command=`ffmpeg -loglevel panic -i $video -ss $start -t $seconds -strict -2 $editdir/$I.MP4`
 					I=$(( $I + 1 ))
 					#VIDEOS+=($video)
-					VIDEOARR[$video] = ${VIDEOARR[$video]}+1
+					pass=$(( ${VIDEOARR[$video]} + 1 ))
+					echo "passed here $pass time"	
+					VIDEOARR[$video]=$(( ${VIDEOARR[$video]} + $pass ))
 				fi
 		fi
 	fi
