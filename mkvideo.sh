@@ -8,7 +8,7 @@ echo "###########################################################"
 echo "# https://github.com/peppeska/Random-Video-Editing-Script #"
 echo "###########################################################"
 
-options=("-u" "-m" "-h" "-s" "-n" "-o")
+options=("-u" "-m" "-h" "-s" "-n" "-p" "-o")
 
 helpmenu () {
 	echo "##############################"
@@ -19,23 +19,26 @@ helpmenu () {
 	echo "# -m music file (default: music.mp3)"
 	echo "# -s seconds cut fro video (default: 2)"
 	echo "# -n numer of selection (default: 140)"
+	echo "# -p how many time maximum pass on video (default: 10)"
 	echo "# -o output file (default: output_final.MP4)"
 	echo "# -h show this help menu"
 	echo "##############################"
 }
 
-unique=false
+#unique=false
 music="music.mp3"
 seconds=2
 selectionNumber=140
 outputFile="output_final.MP4"
+passonvideo=10
 
-while getopts ":uhm:s:n:o:" optname
+while getopts ":uhm:s:n:o:p:" optname
   do
     case "$optname" in
       "u")
         echo "Option $optname is specified"
-	$unique = true
+	passonvideo=1	
+	#$unique = true
         ;;
       "m")
         echo "Option $optname has value $OPTARG"
@@ -52,6 +55,10 @@ while getopts ":uhm:s:n:o:" optname
       "o")
         echo "Option $optname has value $OPTARG"
 	outputFile=$OPTARG
+        ;;
+      "p")
+        echo "Option $optname has value $OPTARG"
+	passonvideo=$OPTARG
         ;;
       "h")
         helpmenu
@@ -78,16 +85,23 @@ editdir=editing`(date +"%Y%d%m-%H%M%S")`
 mkdir $editdir
 files=(./*)
 I=0
-VIDEOS=()
+declare -A VIDEOARR
+#VIDEOS=()
 while [[ $I -le $selectionNumber ]]
 do
 	video=${files[RANDOM % ${#files[@]}]}
 	if [[ $video == *GOPR* ]]
 	then
-		if [[ (" ${VIDEOS[*]} " != *$video*)  || !$unique ]] 
+		if [[ ( ! ${VIDEOARR[$video]+_}) ]]
+		then
+			VIDEOARR[$video]=1
+		fi
+   
+		if [[ ${VIDEOARR[$video]}<$passonvideo ]]
+		#if [[ (" ${VIDEOS[*]} " != *$video*)  || !$unique ]] 
 		then
 				echo "=="
-				echo "File: " $video
+				echo "File:  $video - ${VIDEOARR[$video]} "
 				durata=`ffmpeg -i $video 2>&1 | grep "Duration"| cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g' | awk '{ split($1, A, ":"); split(A[3], B, "."); print 3600*A[1] + 60*A[2] + B[1] }' `
 				echo "duration: "$durata
 				if [[ $durata -ge $seconds ]]
@@ -98,7 +112,8 @@ do
 					echo start: $start , end: $end
 					command=`ffmpeg -loglevel panic -i $video -ss $start -t $seconds -strict -2 $editdir/$I.MP4`
 					I=$(( $I + 1 ))
-					VIDEOS+=($video)
+					#VIDEOS+=($video)
+					VIDEOARR[$video] = ${VIDEOARR[$video]}+1
 				fi
 		fi
 	fi
