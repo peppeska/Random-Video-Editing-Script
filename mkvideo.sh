@@ -106,7 +106,7 @@ do
 				echo "duration: "$durata
 				if [[ $durata -ge $seconds ]]
 				then
-					echo "Selection Number now: $I"
+					echo "SN: $I"
 					end=`shuf -i $seconds-$durata -n 1`
 					start=$((end-$seconds))
 					echo start: $start , end: $end
@@ -119,6 +119,7 @@ do
 				fi
 		fi
 	fi
+#echo "${!VIDEOARR[@]}"
 done
 
 rm output.MP4
