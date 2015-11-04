@@ -8,55 +8,49 @@ echo "###########################################################"
 echo "# https://github.com/peppeska/Random-Video-Editing-Script #"
 echo "###########################################################"
 
-options=("-u" "-r" "-help")
+options=("-u" "-m" "-h")
 
 helpmenu () {
 	echo "##############################"
-	echo "# Parameters Allowed:        "
+	echo "# Parameters Allowed:"
 	echo "# ${options[*]} "
 	echo "#"
-	echo "# -u unique file selection   "
-	echo "# -r repeat file selection   "
-	echo "# -help show this help menu  "
+	echo "# -u unique file selection"
+	echo "# -m music file"
+	echo "# -h show this help menu"
 	echo "##############################"
 }
 
 unique=false
+music="music.mp3"
 
-
-for I in $@
-do
-	if [[ (" ${options[*]} " != *$I*) ]] 
-	then
-		echo "Parameter $I is invalid"
-		helpmenu
-		exit
-	fi
-
-	if [[ $I == "-u" ]] 
-	then 
-		$unique = true
-	fi
-	
-	if [[ $I == "-r" ]] 
-	then 
-		$unique = false
-	fi
-	
-	if [[ $I == "-help" ]] 
-	then 
-		helpmenu 
-		exit
-	fi
-
-		
-done
-
-if [[ $# == 0 ]]
-then
-	helpmenu
+while getopts ":uhm:" optname
+  do
+    case "$optname" in
+      "u")
+        echo "Option $optname is specified"
+	$unique = true
+        ;;
+      "m")
+        echo "Option $optname has value $OPTARG"
+	music=$OPTARG
+        ;;
+      "h")
+        helpmenu
 	exit
-fi
+	;;
+      "?")
+        echo "Unknown option $OPTARG"
+        ;;
+      ":")
+        echo "No argument value for option $OPTARG"
+        ;;
+      *)
+      # Should not occur
+        echo "Unknown error while processing options"
+        ;;
+    esac
+  done
 
 
 echo "LET'S GO EDITING!"
@@ -96,4 +90,4 @@ rm output.MP4
 mencoder -ovc copy -oac pcm $editdir/*.MP4 -o output.MP4
 
 rm output_final.MP4
-ffmpeg -i output.MP4 -i music.mp3 -map 0:0 -map 1:0 -shortest output_final.MP4
+ffmpeg -i output.MP4 -i $music -map 0:0 -map 1:0 -shortest output_final.MP4
