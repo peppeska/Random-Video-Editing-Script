@@ -8,7 +8,7 @@ echo "###########################################################"
 echo "# https://github.com/peppeska/Random-Video-Editing-Script #"
 echo "###########################################################"
 
-options=("-u" "-m" "-h")
+options=("-u" "-m" "-h" "-s" "-n")
 
 helpmenu () {
 	echo "##############################"
@@ -16,15 +16,19 @@ helpmenu () {
 	echo "# ${options[*]} "
 	echo "#"
 	echo "# -u unique file selection"
-	echo "# -m music file"
+	echo "# -m music file (default: music.mp3)"
+	echo "# -s seconds cut fro video (default: 2)"
+	echo "# -n numer of selection (default: 140)"
 	echo "# -h show this help menu"
 	echo "##############################"
 }
 
 unique=false
 music="music.mp3"
+seconds=2
+selectionNumber=140
 
-while getopts ":uhm:" optname
+while getopts ":uhm:s:n:" optname
   do
     case "$optname" in
       "u")
@@ -34,6 +38,14 @@ while getopts ":uhm:" optname
       "m")
         echo "Option $optname has value $OPTARG"
 	music=$OPTARG
+        ;;
+      "s")
+        echo "Option $optname has value $OPTARG"
+	seconds=$OPTARG
+        ;;
+      "n")
+        echo "Option $optname has value $OPTARG"
+	selectionNumber=$OPTARG
         ;;
       "h")
         helpmenu
@@ -53,15 +65,15 @@ while getopts ":uhm:" optname
   done
 
 
+
 echo "LET'S GO EDITING!"
 
 editdir=editing`(date +"%Y%d%m-%H%M%S")`
 mkdir $editdir
 files=(./*)
-seconds=2
 I=0
 VIDEOS=()
-while [[ $I -le 140 ]]
+while [[ $I -le $selectionNumber ]]
 do
 	video=${files[RANDOM % ${#files[@]}]}
 	if [[ $video == *GOPR* ]]
