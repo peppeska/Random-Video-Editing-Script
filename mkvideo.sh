@@ -15,7 +15,7 @@ helpmenu () {
 	echo "# Parameters Allowed:"
 	echo "# ${options[*]} "
 	echo "#"
-	echo "# -u unique file selection"
+	echo "# -u unique file selection (same of -p 1)"
 	echo "# -m music file (default: music.mp3)"
 	echo "# -s seconds cut fro video (default: 2)"
 	echo "# -n numer of selection (default: 140)"
