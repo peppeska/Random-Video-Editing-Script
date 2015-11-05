@@ -25,7 +25,6 @@ helpmenu () {
 	echo "##############################"
 }
 
-#unique=false
 music="music.mp3"
 seconds=2
 selectionNumber=140
@@ -85,8 +84,8 @@ editdir=editing`(date +"%Y%d%m-%H%M%S")`
 mkdir $editdir
 files=(./*)
 I=0
+K=0
 declare -A VIDEOARR
-#VIDEOS=()
 while [[ $I -le $selectionNumber ]]
 do
 	video=${files[RANDOM % ${#files[@]}]}
@@ -98,7 +97,6 @@ do
 		fi
    
 		if [[ ${VIDEOARR[$video]}<$passonvideo ]]
-		#if [[ (" ${VIDEOS[*]} " != *$video*)  || !$unique ]] 
 		then
 				echo "=="
 				echo "File:  $video - ${VIDEOARR[$video]} "
@@ -112,14 +110,19 @@ do
 					echo start: $start , end: $end
 					command=`ffmpeg -loglevel panic -i $video -ss $start -t $seconds -strict -2 $editdir/$I.MP4`
 					I=$(( $I + 1 ))
-					#VIDEOS+=($video)
 					pass=$(( ${VIDEOARR[$video]} + 1 ))
 					echo "passed here $pass time"	
 					VIDEOARR[$video]=$pass
 				fi
 		fi
 	fi
-#echo "${!VIDEOARR[@]}"
+K=$(( $K + 1 ))
+
+if [[ $k > ($selectionNumber*2) ]]
+then
+	break
+fi
+
 done
 
 rm output.MP4
