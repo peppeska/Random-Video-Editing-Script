@@ -1,5 +1,10 @@
 # Random-Video-Editing-Script
 
+[![GitHub issues](https://img.shields.io/github/issues/peppeska/Random-Video-Editing-Script.svg)](https://github.com/peppeska/Random-Video-Editing-Script/issues)
+[![GitHub forks](https://img.shields.io/github/forks/peppeska/Random-Video-Editing-Script.svg)](https://github.com/peppeska/Random-Video-Editing-Script/network)
+[![GitHub stars](https://img.shields.io/github/stars/peppeska/Random-Video-Editing-Script.svg)](https://github.com/peppeska/Random-Video-Editing-Script/stargazers)
+[![peppeska](https://img.shields.io/badge/peppeska-developer-red.svg)](http://peppeska.github.io)
+
 Perfect for GoPRO video!
 
 ## **Usage:**
